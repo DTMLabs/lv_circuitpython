@@ -152,6 +152,9 @@
 // Track stack usage. Expose results via ustack module.
 #define MICROPY_MAX_STACK_USAGE       (0)
 
+// Enable LVGL
+#define MICROPY_PY_LVGL             (1)
+
 // This port is intended to be 32-bit, but unfortunately, int32_t for
 // different targets may be defined in different ways - either as int
 // or as long. This requires different printf formatting specifiers
@@ -752,6 +755,16 @@ extern const struct _mp_obj_module_t wifi_module;
 #define WIFI_MODULE
 #endif
 
+#if MICROPY_PY_LVGL
+#include "lib/lv_bindings/lvgl/src/lv_misc/lv_gc.h"
+extern const struct _mp_obj_module_t mp_module_lvgl;
+#define MICROPY_PORT_DEINIT_FUNC lvesp_deinit(); lv_deinit()
+#define MICROPY_PORT_LVGL_DEF { MP_OBJ_NEW_QSTR(MP_QSTR_lvgl), (mp_obj_t)&mp_module_lvgl }, 
+#else
+#define MICROPY_PORT_LVGL_DEF
+#define LV_ROOTS
+#endif
+
 // Define certain native modules with weak links so they can be replaced with Python
 // implementations. This list may grow over time.
 #define MICROPY_PORT_BUILTIN_MODULE_WEAK_LINKS \
@@ -837,6 +850,7 @@ extern const struct _mp_obj_module_t wifi_module;
     USTACK_MODULE \
     WATCHDOG_MODULE \
     WIFI_MODULE \
+    MICROPY_PORT_LVGL_DEF \
 
 // If weak links are enabled, just include strong links in the main list of modules,
 // and also include the underscore alternate names.
@@ -859,6 +873,8 @@ extern const struct _mp_obj_module_t wifi_module;
 #include "supervisor/flash_root_pointers.h"
 
 #define CIRCUITPY_COMMON_ROOT_POINTERS \
+    LV_ROOTS \
+    void *mp_lv_user_data; \
     const char *readline_hist[8]; \
     vstr_t *repl_line; \
     mp_obj_t rtc_time_source; \
