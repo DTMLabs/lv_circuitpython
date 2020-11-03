@@ -152,8 +152,6 @@
 // Track stack usage. Expose results via ustack module.
 #define MICROPY_MAX_STACK_USAGE       (0)
 
-// Enable LVGL
-#define MICROPY_PY_LVGL             (1)
 
 // This port is intended to be 32-bit, but unfortunately, int32_t for
 // different targets may be defined in different ways - either as int

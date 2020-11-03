@@ -361,6 +361,11 @@ SRC_SHARED_MODULE += wiznet/__init__.c wiznet/wiznet5k.c
 endif
 endif
 
+
+SRC_C += $(TOP)/lib/lv_bindings/driver/cp/LVDisplayGlue.c
+SRC_C += $(TOP)/lib/lv_bindings/driver/cp/modDisplayGlue.c
+
+
 # The smallest SAMD51 packages don't have I2S. Everything else does.
 ifeq ($(CIRCUITPY_AUDIOBUSIO),1)
 SRC_C += peripherals/samd/i2s.c peripherals/samd/$(PERIPHERALS_CHIP_FAMILY)/i2s.c

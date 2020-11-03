@@ -10,7 +10,7 @@
 #include "shared-bindings/displayio/Bitmap.h"
 #include "shared-bindings/displayio/Display.h"
 #include "shared-bindings/displayio/Group.h"
-#include "lib/lv_bindings/driver/cp/lv_cpglue.h"
+#include "lib/lv_bindings/driver/cp/LVDisplayGlue.h"
 #include "shared-bindings/displayio/Palette.h"
 #include "shared-module/displayio/area.h"
 #include "supervisor/shared/autoreload.h"
@@ -43,7 +43,7 @@ STATIC bool any_display_uses_this_framebuffer(mp_obj_base_t *obj) {
 
 
 void displayio_background(void) {
-    lv_cpglue_tick();
+    lvdisplayglue_tick();
     if (mp_hal_is_interrupted()) {
         return;
     }
