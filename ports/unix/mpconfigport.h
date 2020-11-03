@@ -49,8 +49,8 @@
 #define MICROPY_ENABLE_GC           (1)
 #define MICROPY_ENABLE_FINALISER    (1)
 #define MICROPY_STACK_CHECK         (1)
-#define MICROPY_MALLOC_USES_ALLOCATED_SIZE (1)
-#define MICROPY_MEM_STATS           (1)
+#define MICROPY_MALLOC_USES_ALLOCATED_SIZE (0)
+#define MICROPY_MEM_STATS           (0)
 #define MICROPY_DEBUG_PRINTERS      (1)
 // Printing debug to stderr may give tests which
 // check stdout a chance to pass, etc.
@@ -151,7 +151,7 @@
 #define MICROPY_WARNINGS            (1)
 #define MICROPY_ERROR_PRINTER       (&mp_stderr_print)
 #define MICROPY_PY_STR_BYTES_CMP_WARN (1)
-
+#define MICROPY_PY_LVGL             (1)
 extern const struct _mp_print_t mp_stderr_print;
 
 // Define to 1 to use undertested inefficient GC helper implementation
@@ -215,6 +215,16 @@ extern const struct _mp_obj_module_t mp_module_jni;
 #define MICROPY_PY_USELECT_DEF
 #endif
 
+#if MICROPY_PY_LVGL
+#include "lib/lv_bindings/lvgl/src/lv_misc/lv_gc.h"
+extern const struct _mp_obj_module_t mp_module_lvgl;
+#define MICROPY_PORT_DEINIT_FUNC lvesp_deinit(); lv_deinit()
+#define MICROPY_PORT_LVGL_DEF { MP_OBJ_NEW_QSTR(MP_QSTR_lvgl), (mp_obj_t)&mp_module_lvgl }, 
+#else
+#define MICROPY_PORT_LVGL_DEF
+#define LV_ROOTS
+#endif
+
 #define MICROPY_PORT_BUILTIN_MODULES \
     MICROPY_PY_FFI_DEF \
     MICROPY_PY_JNI_DEF \
@@ -224,6 +234,7 @@ extern const struct _mp_obj_module_t mp_module_jni;
     MICROPY_PY_UOS_DEF \
     MICROPY_PY_USELECT_DEF \
     MICROPY_PY_TERMIOS_DEF \
+    MICROPY_PORT_LVGL_DEF \
 
 // type definitions for the specific machine
 
@@ -285,12 +296,17 @@ void mp_unix_mark_exec(void);
 #endif
 #endif
 
+
+
 #define MICROPY_PORT_BUILTINS \
-    { MP_ROM_QSTR(MP_QSTR_open), MP_ROM_PTR(&mp_builtin_open_obj) },
+    { MP_ROM_QSTR(MP_QSTR_open), MP_ROM_PTR(&mp_builtin_open_obj) }, 
+    
 
 #define MP_STATE_PORT MP_STATE_VM
 
 #define MICROPY_PORT_ROOT_POINTERS \
+    LV_ROOTS \
+    void *mp_lv_user_data; \
     const char *readline_hist[50]; \
     void *mmap_region_head; \
 
