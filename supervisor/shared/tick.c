@@ -56,6 +56,10 @@
 #include "shared-module/network/__init__.h"
 #endif
 
+#if MICROPY_PY_LVGL
+#include "lib/lv_bindings/driver/cp/lvglue_display.h"
+#endif
+
 #include "shared-bindings/microcontroller/__init__.h"
 
 #if CIRCUITPY_WATCHDOG
@@ -90,6 +94,10 @@ void supervisor_background_tasks(void *unused) {
     bleio_background();
     #endif
 
+    #if MICROPY_PY_LVGL
+    lvglue_display_tick();
+    #endif
+    
     port_background_task();
 
     assert_heap_ok();
