@@ -115,7 +115,6 @@ endif
 #LittlevGL
 LVGL_BINDING_DIR = $(TOP)/lib/lv_bindings
 LVGL_DIR = $(LVGL_BINDING_DIR)/lvgl
-LVGL_CP_DRV_DIR = $(LVGL_BINDING_DIR)/driver/cp
 INC += -I$(LVGL_BINDING_DIR)
 ALL_LVGL_SRC = $(shell find $(LVGL_DIR) -type f -name '*.h') $(LVGL_BINDING_DIR)/lv_conf.h
 LVGL_PP = $(BUILD)/lvgl/lvgl.pp.c
@@ -129,10 +128,11 @@ $(LVGL_MPY): $(ALL_LVGL_SRC) $(LVGL_BINDING_DIR)/gen/gen_cpy.py
 	$(Q)$(CPP) $(LV_CFLAGS) -I $(LVGL_BINDING_DIR)/pycparser/utils/fake_libc_include $(INC) $(LVGL_DIR)/lvgl.h > $(LVGL_PP)
 	$(Q)python3 $(LVGL_BINDING_DIR)/gen/gen_cpy.py -M lvgl -MP lv -MD $(LVGL_MPY_METADATA) -E $(LVGL_PP) $(LVGL_DIR)/lvgl.h > $@
 
-CFLAGS_MOD += -Wno-unused-function  -Wno-error -DMICROPY_PY_LVGL=1
+CFLAGS_MOD += -Wno-unused-function  -Wno-error
 # SRC_MOD += $(subst $(TOP)/,,$(shell find $(LVGL_DIR)/src $(LVGL_GENERIC_DRV_DIR) -type f -name "*.c") $(LVGL_MPY))
 SRC_MOD += $(subst $(TOP)/,,$(shell find $(LVGL_DIR)/src -type f -name "*.c") $(LVGL_MPY))
 
+FROZEN_MPY_DIRS += $(LVGL_BINDING_DIR)/driver/cp/lvfiledrv 
 
 
 # External modules written in C.

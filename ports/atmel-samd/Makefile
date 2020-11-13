@@ -362,8 +362,8 @@ endif
 endif
 
 
-SRC_C += $(TOP)/lib/lv_bindings/driver/cp/LVDisplayGlue.c
-SRC_C += $(TOP)/lib/lv_bindings/driver/cp/modDisplayGlue.c
+LVGL_CP_GLUE_DIR = $(LVGL_BINDING_DIR)/driver/cp
+SRC_C += $(subst $(TOP)/,,$(shell find $(LVGL_CP_GLUE_DIR) -type f -name "*.c"))
 
 
 # The smallest SAMD51 packages don't have I2S. Everything else does.
