@@ -132,7 +132,7 @@ CFLAGS_MOD += -Wno-unused-function  -Wno-error
 # SRC_MOD += $(subst $(TOP)/,,$(shell find $(LVGL_DIR)/src $(LVGL_GENERIC_DRV_DIR) -type f -name "*.c") $(LVGL_MPY))
 SRC_MOD += $(subst $(TOP)/,,$(shell find $(LVGL_DIR)/src -type f -name "*.c") $(LVGL_MPY))
 
-FROZEN_MPY_DIRS += $(LVGL_BINDING_DIR)/driver/cp/lvfiledrv 
+
 
 
 # External modules written in C.
