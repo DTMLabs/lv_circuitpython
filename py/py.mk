@@ -128,8 +128,9 @@ $(LVGL_MPY): $(ALL_LVGL_SRC) $(LVGL_BINDING_DIR)/gen/gen_cpy.py
 	$(Q)$(CPP) $(LV_CFLAGS) -I $(LVGL_BINDING_DIR)/pycparser/utils/fake_libc_include $(INC) $(LVGL_DIR)/lvgl.h > $(LVGL_PP)
 	$(Q)python3 $(LVGL_BINDING_DIR)/gen/gen_cpy.py -M lvgl -MP lv -MD $(LVGL_MPY_METADATA) -E $(LVGL_PP) $(LVGL_DIR)/lvgl.h > $@
 
-CFLAGS_MOD += -Wno-unused-function  -Wno-error
-# SRC_MOD += $(subst $(TOP)/,,$(shell find $(LVGL_DIR)/src $(LVGL_GENERIC_DRV_DIR) -type f -name "*.c") $(LVGL_MPY))
+# Needed for wrapper compilation until warnings are fixed
+CFLAGS_MOD += -Wno-error
+
 SRC_MOD += $(subst $(TOP)/,,$(shell find $(LVGL_DIR)/src -type f -name "*.c") $(LVGL_MPY))
 
 

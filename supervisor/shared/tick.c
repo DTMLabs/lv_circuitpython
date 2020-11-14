@@ -57,7 +57,7 @@
 #endif
 
 #if MICROPY_PY_LVGL
-#include "lib/lv_bindings/driver/cp/lvglue_display.h"
+#include "lib/lv_bindings/circuitpython/lvglue_display.h"
 #endif
 
 #include "shared-bindings/microcontroller/__init__.h"

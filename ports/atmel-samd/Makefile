@@ -362,7 +362,7 @@ endif
 endif
 
 
-LVGL_CP_GLUE_DIR = $(LVGL_BINDING_DIR)/driver/cp
+LVGL_CP_GLUE_DIR = $(LVGL_BINDING_DIR)/circuitpython
 SRC_C += $(subst $(TOP)/,,$(shell find $(LVGL_CP_GLUE_DIR) -type f -name "*.c"))
 
 
