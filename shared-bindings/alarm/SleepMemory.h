@@ -1,9 +1,10 @@
 /*
- * This file is part of the MicroPython project, http://micropython.org/
+ * This file is part of the Micro Python project, http://micropython.org/
  *
  * The MIT License (MIT)
  *
- * Copyright 2019 Sony Semiconductor Solutions Corporation
+ * Copyright (c) 2017 Scott Shawcroft for Adafruit Industries
+ * Copyright (c) 2020 Scott Shawcroft for Adafruit Industries
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,22 +25,16 @@
  * THE SOFTWARE.
  */
 
-// This file defines board specific functions.
+#ifndef MICROPY_INCLUDED_SHARED_BINDINGS_ALARM_SLEEPMEMORY_H
+#define MICROPY_INCLUDED_SHARED_BINDINGS_ALARM_SLEEPMEMORY_H
 
-#ifndef MICROPY_INCLUDED_CXD56_BOARDS_BOARD_H
-#define MICROPY_INCLUDED_CXD56_BOARDS_BOARD_H
+#include "common-hal/alarm/SleepMemory.h"
 
-#include <stdbool.h>
+extern const mp_obj_type_t alarm_sleep_memory_type;
 
-// Initializes board related state once on start up.
-void board_init(void);
+uint32_t common_hal_alarm_sleep_memory_get_length(alarm_sleep_memory_obj_t *self);
 
-// Returns true if the user initiates safe mode in a board specific way.
-// Also add BOARD_USER_SAFE_MODE in mpconfigboard.h to explain the board specific
-// way.
-bool board_requests_safe_mode(void);
+bool common_hal_alarm_sleep_memory_set_bytes(alarm_sleep_memory_obj_t *self, uint32_t start_index, const uint8_t* values, uint32_t len);
+void common_hal_alarm_sleep_memory_get_bytes(alarm_sleep_memory_obj_t *self, uint32_t start_index, uint8_t* values, uint32_t len);
 
-// Reset the state of off MCU components such as neopixels.
-void reset_board(void);
-
-#endif  // MICROPY_INCLUDED_CXD56_BOARDS_BOARD_H
+#endif  // MICROPY_INCLUDED_SHARED_BINDINGS_ALARM_SLEEPMEMORY_H
